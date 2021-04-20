@@ -1,9 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt 
 
-import numpy as np
-import matplotlib.pyplot as plt 
-
 
 class pfit():
   def __init__(self,x,y,dy=None,ndeg=1,kconst=None):
