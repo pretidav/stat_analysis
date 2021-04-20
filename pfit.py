@@ -86,10 +86,10 @@ class pfit():
 if __name__=='__main__':
 
     x = np.linspace(0,10,num=10)
-    y = 4*x+ 2 + np.random.rand(len(x))
-    dy = 30*np.random.rand(len(x))
+    y = 5*x**2+ 2*x + 5 + 2*np.random.rand(len(x))
+    dy = 100*np.random.rand(len(x))
 
-    ff = pfit(x=x,y=y,dy=dy,ndeg=1,kconst=[2])
+    ff = pfit(x=x,y=y,dy=dy,ndeg=2)
     ff.fit()
-    ff.plot(xlabel='x',ylabel='y',savefile='test.eps')
+    ff.plot(xlabel='x',ylabel='y',savefile='quad.png')
     ff.log()
