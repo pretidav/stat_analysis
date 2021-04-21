@@ -37,6 +37,16 @@ kconst=[2] # [Optional] a list of coefficients, starting from the highest to the
 This routine allows to perform non-linear fits with errors on both axis. If errors are not provided they are ignored. 
 Input function has to be passed in this form (for instance): 
 
+Once requirements are installed with
+~~~
+pip install requirements
+~~~
+
+For unit testing the code can be executed as
+
+~~~
+python nlfit.py 
+~~~
 
 For common usage, class _pfit_ can be customized with the following arguments:
 ~~~
