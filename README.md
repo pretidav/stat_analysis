@@ -30,3 +30,33 @@ kconst=[2] # [Optional] a list of coefficients, starting from the highest to the
 * .plot(): plot the data and fit with error band. Optional parameters are xlabel,ylabel and savefile. if nor specified the plot will not be saved. 
 
 ![alt text](https://github.com/pretidav/stat_analysis/raw/main/fig/quad.png)
+
+
+# nlfit
+
+This routine allows to perform non-linear fits with errors on both axis. If errors are not provided they are ignored. 
+Input function has to be passed in this form (for instance): 
+
+
+For common usage, class _pfit_ can be customized with the following arguments:
+~~~
+f  # input function to be fitted (see below) 
+x  # input data in list or np.array format
+y  # input data in list or np.array format
+dx # [Optional] input data in list or np.array format
+dy # [Optional] input data in list or np.array format
+k0 # parameters initial values for the optimizer e.g. [0.,0., ... ]. Notice that the length of this vector *must* match the number of parameter of f function.  
+~~~
+
+The input function f should be of this form: 
+~~~
+    def f(B, x):
+        return np.exp(B[0]*x) + B[1]*np.sin(x) + B[2] 
+~~~
+
+
+* .log(): fit parameters with uncertainties, R^2, and covariance matrix are displayed. 
+
+* .plot(): plot the data and fit with error band. Optional parameters are xlabel,ylabel and savefile. if nor specified the plot will not be saved. 
+
+![alt text](https://github.com/pretidav/stat_analysis/raw/main/fig/nonlin.png)

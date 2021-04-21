@@ -33,8 +33,8 @@ class synt_bootstrap():
         else : 
             M = M * cov
         for i in range(len(self.k)):
-            kdummy    = M[:,i] + k[i]
-            kBS[0,i]  = k[i]
+            kdummy    = M[:,i] + self.k[i]
+            kBS[0,i]  = self.k[i]
             kBS[1:,i] = kdummy 
             del kdummy
         return kBS
