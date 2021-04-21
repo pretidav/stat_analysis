@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt 
-
+from scipy import stats
 
 class pfit():
   def __init__(self,x,y,dy=None,ndeg=1,kconst=None):
@@ -17,6 +17,8 @@ class pfit():
     self.dof        = None
     self.chi2       = None
     self.dk         = None
+    self.t          = None
+    self.p_values   = None
 
   def fit(self):
     if self.dy.any():
@@ -36,18 +38,22 @@ class pfit():
       fitr+=((self.k[n-1])*x**(self.ndeg+1-n))/dy
     self.dof = (len(y)-self.ndeg-1+self.nconst)
     self.chi2 = np.sum((fitr-yr)**2)/self.dof
+    self.t = self.k/self.dk
+    self.p_values =np.array([2*(1-stats.t.cdf(np.abs(i),self.dof)) for i in self.t])
     if self.kconst!=None:
       self.k  = np.append(self.k,self.kconst)
       self.dk = np.append(self.dk,[0]*len(self.kconst))
 
   def stats(self):
-    return self.k, self.dk, self.cov, self.chi2, self.dof
+    return self.k, self.dk, self.t, self.p_values, self.cov, self.chi2, self.dof
 
   def log(self,n=20):
     string = ' Fit Log '
     print('='*n + string + '='*n)
     print(' k       = {}'.format(self.k))
     print('dk       = {}'.format(self.dk))
+    print('t        = {}'.format(self.t))
+    print('p-values = {}'.format(self.p_values))
     print('chi2/dof = {}'.format(self.chi2))
     print('dof      = {}'.format(self.dof))
     print('cov      = ')
