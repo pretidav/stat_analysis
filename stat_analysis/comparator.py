@@ -3,10 +3,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class comparator():
-  def __init__(self,A,B,confidence=0.05):
+  def __init__(self,A,B,confidence=0.05,normaltest=True):
     self.A = A
     self.B = B
     self.confidence = confidence
+    self.normaltest = normaltest
     self.get_stat()
     self.log()
 
@@ -42,40 +43,48 @@ class comparator():
         plt.show()
 
   def compare(self):
-    _, pA = normaltest(self.A)
-    _, pB = normaltest(self.B)
-    self.diff = None
     passed = True
-    if pA > self.confidence:
-      print('A - normal test:           PASSED')
-    else : 
-      print('A - normal test: NOT PASSED')
-      passed = False
-    if pB > self.confidence:
-      print('B - normal test:           PASSED')
-    else :
-      print('B - normal test: NOT PASSED')
-      passed = False
+    if self.normaltest:
+      _, pA = normaltest(self.A)
+      _, pB = normaltest(self.B)
+      if pA > self.confidence:
+        print('A - normal test:           PASSED')
+      else : 
+        print('A - normal test: NOT PASSED')
+        passed = False
+      if pB > self.confidence:
+        print('B - normal test:           PASSED')
+      else :
+        print('B - normal test: NOT PASSED')
+        passed = False
 
     if passed: 
-      _, p_test = ttest_ind(self.A, self.B, equal_var=False)
-      if p_test < self.confidence:
-        print("Welch's t-test:            PASSED") 
+      _, p_test0 = ttest_ind(self.A, self.B, equal_var=True)
+      if p_test0 < self.confidence:
+        print("Student's t-test:          PASSED p-value={}".format(p_test0)) 
+        diff_S = True
+      else : 
+        print("Student's t-test:        NOT PASSED p-value={}".format(p_test0)) 
+        diff_S = False 
+
+      _, p_test1 = ttest_ind(self.A, self.B, equal_var=False)
+      if p_test1 < self.confidence:
+        print("Welch's t-test:            PASSED p-value={}".format(p_test1)) 
         diff_W = True
       else : 
-        print("Welch's t-test:          NOT PASSED") 
+        print("Welch's t-test:          NOT PASSED p-value={}".format(p_test1)) 
         diff_W = False 
 
       _, p_test2 = ks_2samp(self.A, self.B)
-      if p_test < self.confidence:
+      if p_test2 < self.confidence:
         diff_KS = True
-        print("Kolmogorov-Smirnov test:   PASSED")
+        print("Kolmogorov-Smirnov test:   PASSED p-value={}".format(p_test2))
       else : 
-        print("Kolmogorov-Smirnov test: NOT PASSED") 
+        print("Kolmogorov-Smirnov test: NOT PASSED p-value={}".format(p_test2))
         diff_KS = False 
       
       print('='*self.n + '='*len(self.string) + '='*self.n)
-      if diff_KS and diff_W:
+      if np.sum([diff_S,diff_W,diff_KS])>=2 :
         print('A and B are significantly different with {}% confidence'.format((1-self.confidence)*100)) 
       else :
         print('A and B are from the same distribution with {}% confidence'.format((1-self.confidence)*100)) 
@@ -83,9 +92,10 @@ class comparator():
       print('Error: distributions are not normal - more measurements are required')
 
 if __name__=="__main__":
-    a = np.random.normal(2,0.2,100)
-    b = np.random.normal(2.1,0.2,100)
 
-    aa = comparator(A=a,B=b)
+
+    a = [30.02,29.99,30.11,29.97,30.01,29.99]
+    b = [29.89,29.93,29.72,29.98,30.02,29.98]
+    aa = comparator(A=a,B=b,normaltest=False)
     aa.compare()
-    aa.plot(bins=100,savename='david.png')
+    aa.plot(bins=100)
