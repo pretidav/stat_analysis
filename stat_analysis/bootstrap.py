@@ -31,7 +31,7 @@ class synt_bootstrap():
         if len(self.k)>1:
             M = np.dot(M,np.linalg.cholesky(self.cov).T)
         else : 
-            M = M * cov
+            M = M * self.cov
         for i in range(len(self.k)):
             kdummy    = M[:,i] + self.k[i]
             kBS[0,i]  = self.k[i]

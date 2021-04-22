@@ -16,8 +16,8 @@ class comparator():
     self.muB = np.mean(self.B)
     self.stdA = np.std(self.A)
     self.stdB = np.std(self.B)
-    self.sterrA = self.stdA/np.sqrt(len(self.A))
-    self.sterrB = self.stdB/np.sqrt(len(self.B))
+    self.sterrA = float(self.stdA/np.sqrt(len(self.A)))
+    self.sterrB = float(self.stdB/np.sqrt(len(self.B)))
 
   def log(self,n=20):
     self.n = n
@@ -86,10 +86,13 @@ class comparator():
       print('='*self.n + '='*len(self.string) + '='*self.n)
       if np.sum([diff_S,diff_W,diff_KS])>=2 :
         print('A and B are significantly different with {}% confidence'.format((1-self.confidence)*100)) 
+        return True
       else :
-        print('A and B are from the same distribution with {}% confidence'.format((1-self.confidence)*100)) 
+        print('A and B are NOT significantly different with {}% confidence'.format((1-self.confidence)*100))
+        return False 
     else : 
       print('Error: distributions are not normal - more measurements are required')
+      return False
 
 if __name__=="__main__":
 
@@ -97,5 +100,6 @@ if __name__=="__main__":
     a = [30.02,29.99,30.11,29.97,30.01,29.99]
     b = [29.89,29.93,29.72,29.98,30.02,29.98]
     aa = comparator(A=a,B=b,normaltest=False)
-    aa.compare()
+    bb = aa.compare()
     aa.plot(bins=100)
+    print(bb)

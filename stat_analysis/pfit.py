@@ -24,19 +24,19 @@ class pfit():
     if self.dy.any():
       dy = self.dy
     else :
-      dy = np.ones(len(y))
-    yr = y/dy
-    a = np.zeros(shape=(len(x),len(range(1,self.ndeg+1-self.nconst+1))))
+      dy = np.ones(len(self.y))
+    yr = self.y/dy
+    a = np.zeros(shape=(len(self.x),len(range(1,self.ndeg+1-self.nconst+1))))
     for n in range(1,self.ndeg+1-self.nconst+1):
-      a[:,n-1] = (x**(self.ndeg-n+1))/dy
+      a[:,n-1] = (self.x**(self.ndeg-n+1))/dy
     a = np.dot(np.linalg.inv(np.dot(a.T,a)),a.T)
     self.k = np.dot(a,yr)
     self.cov = np.dot(a,a.T)
     self.dk = np.sqrt(np.diag(self.cov))
     fitr=0
     for n in range(1,self.ndeg+1-self.nconst+1):
-      fitr+=((self.k[n-1])*x**(self.ndeg+1-n))/dy
-    self.dof = (len(y)-self.ndeg-1+self.nconst)
+      fitr+=((self.k[n-1])*self.x**(self.ndeg+1-n))/dy
+    self.dof = (len(self.y)-self.ndeg-1+self.nconst)
     self.chi2 = np.sum((fitr-yr)**2)/self.dof
     self.t = self.k/self.dk
     self.p_values =np.array([2*(1-stats.t.cdf(np.abs(i),self.dof)) for i in self.t])
