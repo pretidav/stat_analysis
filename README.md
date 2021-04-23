@@ -1,4 +1,5 @@
 ![](https://github.com/pretidav/stat_analysis/actions/workflows/python-app.yml/badge.svg)
+[![codecov](https://codecov.io/gh/pretidav/stat_analysis/branch/main/graph/badge.svg)](https://codecov.io/gh/pretidav/stat_analysis)
 
 # stat_analysis:
 This repository contains several statistical tools useful for scientific computations. 
