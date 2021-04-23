@@ -1,3 +1,5 @@
+![](https://github.com/pretidav/stat_analysis/actions/workflows/python-app.yml/badge.svg)
+
 # stat_analysis:
 This repository contains several statistical tools useful for scientific computations. 
 
