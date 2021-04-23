@@ -70,3 +70,7 @@ The input function f should be of this form:
 * .plot(): plot the data and fit with error band. Optional parameters are xlabel,ylabel and savefile. if nor specified the plot will not be saved. 
 
 ![alt text](https://github.com/pretidav/stat_analysis/raw/main/fig/nonlin.png)
+
+# bootstrap 
+
+# comparator
