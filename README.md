@@ -75,5 +75,9 @@ The input function f should be of this form:
 ![alt text](https://github.com/pretidav/stat_analysis/raw/main/fig/nonlin.png)
 
 # bootstrap 
+This routine allows for two kind of bootstrap resampling methods. 
 
+* bootstrap: usual bootstrap with repetition with possibility of data blocking. 
+* synt_bootstrap: syntetic bootstrap data generated stating from a vector of parameters with a given covariance. 
 # comparator
+This routine allows for the comparison of two arrays of data. A pipeline of statistical tests, including Welch's t-test, Student's t-test and Kolmogorov-Smirnov test are included to distinguish with a given confidence if the data are coming from the same distribution or not. 
