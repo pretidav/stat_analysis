@@ -18,6 +18,11 @@ For unit testing the code can be executed as
 python pfit.py 
 ~~~
 
+Import the module as 
+~~~
+from stat_analysis.pfit import pfit
+~~~
+
 For common usage, class _pfit_ can be customized with the following arguments:
 
 ~~~
@@ -51,6 +56,11 @@ For unit testing the code can be executed as
 python nlfit.py 
 ~~~
 
+Import the module as
+~~~
+from stat_analysis.nlfit import nlfit
+~~~
+
 For common usage, class _pfit_ can be customized with the following arguments:
 ~~~
 f  # input function to be fitted (see below) 
@@ -63,6 +73,7 @@ k0 # parameters initial values for the optimizer e.g. [0.,0., ... ]. Notice that
 
 The input function f should be of this form: 
 ~~~
+import numpy as np
     def f(B, x):
         return np.exp(B[0]*x) + B[1]*np.sin(x) + B[2] 
 ~~~
@@ -79,5 +90,10 @@ This routine allows for two kind of bootstrap resampling methods.
 
 * bootstrap: usual bootstrap with repetition with possibility of data blocking. 
 * synt_bootstrap: syntetic bootstrap data generated stating from a vector of parameters with a given covariance. 
+
+The modules can be imported as 
+~~~
+from stat_analysis.bootstrap import bootstrap, synt_bootstrap
+~~~
 # comparator
 This routine allows for the comparison of two arrays of data. A pipeline of statistical tests, including Welch's t-test, Student's t-test and Kolmogorov-Smirnov test are included to distinguish with a given confidence if the data are coming from the same distribution or not. 
