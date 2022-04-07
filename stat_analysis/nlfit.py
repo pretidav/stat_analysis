@@ -34,7 +34,7 @@ class nlfit():
     print('R**2     = {}'.format(self.fitout.sum_square))
     print('dof      = {}'.format(self.dof))
     print('cov      = ')
-    print('{}'.format(self.fitout.cov_beta))
+    print('{}'.format(self.fitout.cov_beta*self.fitout.res_var))
     print('='*n + '='*len(string) + '='*n)
 
   def plot(self,savefile=None,xlabel=None,ylabel=None,Nb=5000):
@@ -48,11 +48,12 @@ class nlfit():
       plt.errorbar(x=self.x,y=self.y,fmt='bo')
 
     px = np.linspace(min(self.x),max(self.x))
-    bs = synt_bootstrap(k=self.fitout.beta,Nb=Nb,cov=self.fitout.cov_beta).sample()
+    bs = synt_bootstrap(k=self.fitout.beta,Nb=Nb,cov=self.fitout.cov_beta*self.fitout.res_var).sample()
     ff = np.zeros((Nb+1,len(px)))
     for i,mm in enumerate(bs): 
         ff[i,:] = self.func(mm,px)
     f  = ff[0,:]
+    
     sf = np.std(ff[1:,:],axis=0) 
     plt.fill_between(px,f-sf,f+sf,alpha=0.4,color='r')
     plt.plot(px,f,'r--',linewidth=1)
@@ -71,8 +72,8 @@ if __name__=='__main__':
 
     x = np.linspace(0,10,num=20)
     y = f([0.2,1,5],x) + 1*np.random.rand(len(x))
-    dy = 4*np.random.rand(len(x))
-    dx = 2*np.random.rand(len(x))
+    dy = 1*np.random.rand(len(x))
+    dx = 0.5*np.random.rand(len(x))
 
     ff = nlfit(func=f,x=x,y=y,dx=dx,dy=dy,k0=[0.,0.,0.])
     ff.fit()
