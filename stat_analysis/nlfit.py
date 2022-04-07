@@ -1,7 +1,7 @@
 import numpy as np
 from scipy import odr, stats
 import matplotlib.pyplot as plt
-from bootstrap import synt_bootstrap
+from .bootstrap import synt_bootstrap
 
 class nlfit():
   def __init__(self,func,x,y,k0,dx=None,dy=None):
