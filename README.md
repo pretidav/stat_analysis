@@ -93,7 +93,34 @@ This routine allows for two kind of bootstrap resampling methods.
 
 The modules can be imported as 
 ~~~
-from stat_analysis.bootstrap import bootstrap, synt_bootstrap
+from stat_analysis.bootstrap import bootstrap
+BS=bootstrap(k=data,Nb=10000000)
+b=BS.sample()
+print(np.mean(b,axis=0))
+print(np.std(b,axis=0))
 ~~~
+or 
+~~~
+from stat_analysis.bootstrap import synt_bootstrap
+
+k = [2,3]
+cov = [[0.3,0.5],[0.5,2]]
+BS=synt_bootstrap(k=k,Nb=10000000,cov=cov)
+b=BS.sample()
+print(np.cov(b.T))
+print(np.mean(b,axis=0))
+~~~
+
+
 # comparator
 This routine allows for the comparison of two arrays of data. A pipeline of statistical tests, including Welch's t-test, Student's t-test and Kolmogorov-Smirnov test are included to distinguish with a given confidence if the data are coming from the same distribution or not. 
+
+~~~
+from stat_analysis.comparator import comparator
+a = [30.02,29.99,30.11,29.97,30.01,29.99]
+b = [29.89,29.93,29.72,29.98,30.02,29.98]
+aa = comparator(A=a,B=b,normaltest=False)
+bb = aa.compare()
+aa.plot(bins=100)
+print(bb)
+~~~
