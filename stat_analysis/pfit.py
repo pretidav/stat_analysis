@@ -95,11 +95,12 @@ class pfit():
       for ix in range(len(px)):
         for n in range(1,self.ndeg+1-self.nconst+1):
           f[ix]+=(self.k[n-1])*px[ix]**(self.ndeg+1-n)
-      plt.plot(px,f,'r--',linewidth=1)
       plt.fill_between(px,f-err,f+err,alpha=0.4,color='r')
-      if savefile: 
-        plt.savefig(fname=savefile)
-      return {'pred':self.pred,'dpred':self.dpred}
+      plt.plot(px,f,'r--',linewidth=1)
+
+    if savefile: 
+      plt.savefig(fname=savefile)
+    return {'pred':self.pred,'dpred':self.dpred}
 
   def plot(self,savefile=None,xlabel=None,ylabel=None):
     if self.dy.any():
@@ -140,5 +141,5 @@ if __name__=='__main__':
     ff.fit()
     ff.plot(xlabel='x',ylabel='y',savefile='../fig/quad.png')
     plt.clf()
-    ff.predict(x=11,xlabel='x',ylabel='y',savefile='../fig/quad_pred.png')
+    ff.predict(x=13.5,xlabel='x',ylabel='y',savefile='../fig/quad_pred.png')
     ff.log()
