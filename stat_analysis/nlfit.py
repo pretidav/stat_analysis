@@ -14,6 +14,8 @@ class nlfit():
     self.dy = np.array(dy)
     self.t = None
     self.p_values = None
+    self.pred = None
+    self.dpred = None
 
   def fit(self):
     model = odr.Model(self.func)
@@ -35,7 +37,42 @@ class nlfit():
     print('dof      = {}'.format(self.dof))
     print('cov      = ')
     print('{}'.format(self.fitout.cov_beta*self.fitout.res_var))
+    if self.pred and self.dpred: 
+      print(' k       = {}'.format(self.pred))
+      print('dk       = {}'.format(self.dpred))    
     print('='*n + '='*len(string) + '='*n)
+
+  def predict(self,x,savefile=None,xlabel=None,ylabel=None,Nb=5000):
+
+    self.plot(savefile=None,xlabel=xlabel,ylabel=ylabel,Nb=Nb)
+
+    extrapolation = False
+    if x<min(self.x):
+      px = np.linspace(x,min(self.x))
+      extrapolation=True
+    elif x>max(self.x):
+      px = np.linspace(max(self.x),x)
+      extrapolation=True
+    
+    if extrapolation:
+      ff_ext = np.zeros((len(self.bs),len(px)))
+      for i,mm in enumerate(self.bs): 
+          ff_ext[i,:] = self.func(mm,px)
+      f_ext = ff_ext[0,:]
+      sf_ext = np.std(ff_ext[1:,:],axis=0)
+      plt.fill_between(px,f_ext-sf_ext,f_ext+sf_ext,alpha=0.4,color='r')
+      plt.plot(px,f_ext,'r--',linewidth=1)
+
+    ff = np.zeros((len(self.bs),1))  
+    for i,mm in enumerate(self.bs): 
+      ff[i,:] = self.func(mm,x)
+    self.dpred = np.std(ff[1:,:],axis=0)
+    self.pred = ff[0,:]
+    plt.errorbar(x=x,y=self.pred,yerr=self.dpred,fmt='gs')
+    if savefile!=None:
+      plt.savefig(fname=savefile)
+  
+    return {'pred':self.pred, 'dpred':self.dpred}
 
   def plot(self,savefile=None,xlabel=None,ylabel=None,Nb=5000):
     if self.dy.any() and self.dx.any():
@@ -48,9 +85,9 @@ class nlfit():
       plt.errorbar(x=self.x,y=self.y,fmt='bo')
 
     px = np.linspace(min(self.x),max(self.x))
-    bs = synt_bootstrap(k=self.fitout.beta,Nb=Nb,cov=self.fitout.cov_beta*self.fitout.res_var).sample()
+    self.bs = synt_bootstrap(k=self.fitout.beta,Nb=Nb,cov=self.fitout.cov_beta*self.fitout.res_var).sample()
     ff = np.zeros((Nb+1,len(px)))
-    for i,mm in enumerate(bs): 
+    for i,mm in enumerate(self.bs): 
         ff[i,:] = self.func(mm,px)
     f  = ff[0,:]
     
@@ -77,5 +114,7 @@ if __name__=='__main__':
 
     ff = nlfit(func=f,x=x,y=y,dx=dx,dy=dy,k0=[0.,0.,0.])
     ff.fit()
+    ff.plot(savefile='../fig/nonlin.png')
+    plt.clf()
+    ff.predict(x=10.5,xlabel='x',ylabel='y',savefile='../fig/nonlin_pred.png')
     ff.log()
-    ff.plot(savefile='nonlin.png')
