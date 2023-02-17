@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
    name='stat_analysis',
-   version='1.0',
+   version='1.0.1',
    description='scientific stat tools',
    author='David Preti',
    license = "MIT",
