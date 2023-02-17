@@ -39,6 +39,9 @@ kconst=[2] # [Optional] a list of coefficients, starting from the highest to the
 
 ![alt text](https://github.com/pretidav/stat_analysis/raw/main/fig/quad.png)
 
+* .predict(): plot the data and fit with error band and the predicted point x. Optional parameters are xlabel,ylabel and savefile. if nor specified the plot will not be saved. 
+
+![alt text](https://github.com/pretidav/stat_analysis/raw/main/fig/quad_pred.png)
 
 # nlfit
 
