@@ -4,6 +4,11 @@
 # stat_analysis:
 This repository contains several statistical tools useful for scientific computations. 
 
+# installation 
+~~~
+pip install git+https://github.com/pretidav/stat_analysis
+~~~
+
 ## pfit
 Is an linear (in the parameters) fitting script which takes into account statistical uncertainties on y-axis. Chi^2 is used a likelihood function, minimized analytically. 
 
