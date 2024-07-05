@@ -9,7 +9,7 @@ setup(
    author_email='preti.david@gmail.com',
    url = "https://github.com/pretidav/stat_analysis",
    packages=find_packages(include=['stat_analysis', 'stat_analysis.*']),  
-   install_requires=['matplotlib==3.3.3',
-                     'numpy==1.18.5',
-                     'scipy==1.3.1']
+   install_requires=['matplotlib==3.8.4',
+                     'numpy==1.26.4',
+                     'scipy==1.13.0']
 )
